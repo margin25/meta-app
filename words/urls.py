@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+# urls for each page
 urlpatterns = [
     path('', views.homepage, name="homepage"),
     path('<str:word>', views.wordpage, name="wordpage"),
