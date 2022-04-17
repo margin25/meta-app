@@ -6,11 +6,16 @@
     </head>
 
     <body>
-        <h1> {{word}} : {{definition}}</h1>
+        <h1> 
+            <a href="/">MetaDictionary</a>
+            {{word}}
 		<form action="/search/" method="post">{% csrf_token %}
-			<label for="searchbar">Search: </label>
 			<input id="searchbar" type="text" name="searchbar" value="{{ current_name }}">
 			<input type="submit" value="Search">
 		</form>
+        </h1>
+        <p>
+            {{word} : {definition}}
+        </p>
     </body>
 </html>

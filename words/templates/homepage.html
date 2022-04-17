@@ -7,12 +7,13 @@
 
     <body>
         <h1> Welcome to MetaDictionary!</h1>
-		<body>
-		<form action="/search/" method="post">{% csrf_token %}
-			<label for="searchbar">Search: </label>
-			<input id="searchbar" type="text" name="searchbar" value="{{ current_name }}">
-			<input type="submit" value="Search">
-		</form>
-    </body>
+        <h2>
+            <form action="/search/" method="post">{% csrf_token %}
+                <input id="searchbar" type="text" name="searchbar" value="{{ current_name }}">
+                <input type="submit" value="Search">
+            </form>
+        </h2>
+
+        <a href="/aboutUs">About</a>
     </body>
 </html>
