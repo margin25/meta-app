@@ -35,8 +35,9 @@ def homepage(request):
         definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
     definition = definition[4:]
 
-    definition = definition.replace("{it}","")
-    definition = definition.replace("{/it}","")
+    if (definition.find("{it}")):
+        definition = definition.replace("{it}","")
+        definition = definition.replace("{/it}","")
 
     while (definition.find("{d_link|") != -1):
         definition = definition.replace("{d_link|","",1)
@@ -64,8 +65,9 @@ def wordpage(request, word):
         definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
     definition = definition[4:]
 
-    definition = definition.replace("{it}","")
-    definition = definition.replace("{/it}","")
+    if (definition.find("{it}")):
+        definition = definition.replace("{it}","")
+        definition = definition.replace("{/it}","")
 
     while (definition.find("{d_link|") != -1):
         definition = definition.replace("{d_link|","",1)
@@ -92,7 +94,7 @@ def wordpage(request, word):
     slangDef = slangDef.replace("]","")
 
     #send to front end
-    return render(request, 'wordpage.html', {"word" : word, "definition": slangDef})
+    return render(request, 'wordpage.html', {"word" : word, "definition": definition, "slangDef" : slangDef})
 
 def get_search(request):
     # if this is a POST request we need to process the form data
