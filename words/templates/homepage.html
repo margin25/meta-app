@@ -1,19 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href = "{% static 'styles.css' %}"> 
-    </head>
+  <head>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  </head>
 
-    <body>
-        <h1> Welcome to MetaDictionary!</h1>
-        <h2>
-            <form action="/search/" method="post">{% csrf_token %}
-                <input id="searchbar" type="text" name="searchbar" value="{{ current_name }}">
-                <input type="submit" value="Search">
-            </form>
-        </h2>
+  <body>
+    <div class="topnav">
+      <a class="active" href="#home">MetaDictionary</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
+    </div>
+    
+    <h2>
+      <form action="/search/" method="post">
+        {% csrf_token %}
+        <input
+          id="searchbar"
+          type="text"
+          name="searchbar"
+          value="{{ current_name }}"
+        />
+        <input type="submit" value="Search" />
+      </form>
+    </h2>
 
-        <a href="/aboutUs">About</a>
-    </body>
+    <a href="/aboutUs">About</a>
+  </body>
 </html>
