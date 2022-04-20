@@ -32,11 +32,7 @@ def homepage(request):
     if (definition == "pseq"):
         definition = (((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])[0][1])['dt'][0][1]
     else:
-        definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[0]   )
-        if (definition == "uns"):
-            definition = (    (((((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1])[0])[0])[1]   )
-        else:
-            definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
+        definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
     definition = definition[4:]
 
     if (definition.find("{it}")):
@@ -62,16 +58,11 @@ def wordpage(request, word):
     response = requests.get(url)
     wordJson = response.json()
 
-    #get definition for random word
     definition =   ((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[0])
     if (definition == "pseq"):
         definition = (((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])[0][1])['dt'][0][1]
     else:
-        definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[0]   )
-        if (definition == "uns"):
-            definition = (    (((((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1])[0])[0])[1]   )
-        else:
-            definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
+        definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
     definition = definition[4:]
 
     if (definition.find("{it}")):
