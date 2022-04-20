@@ -57,6 +57,10 @@ def wordpage(request, word):
     #get json file from api
     response = requests.get(url)
     wordJson = response.json()
+    try:
+       wordJson[0]['def'] 
+    except:
+        return render(request, 'notword.html')
 
     definition =   ((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[0])
     if (definition == "pseq"):
@@ -111,5 +115,4 @@ def get_search(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = NameForm()
-
     return render(request, 'wordpage.html', wordSearch, {'form': form})
