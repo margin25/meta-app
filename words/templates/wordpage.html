@@ -36,7 +36,9 @@
       
 
       <h2> <strong> slang definitions of {{word}} </strong></h2>
-        <p>{{slangDef}}</p>
+      {% for def in slangDef %}
+        <p>{{def}}</p>
+      {% endfor %}
       
     </div>
     <div class="fixed-footer">

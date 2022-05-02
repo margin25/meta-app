@@ -89,17 +89,22 @@ def wordpage(request, word):
 
 
     #Parse through json and clean up
-    slangDef = ((wordJson['list'])[0])['definition']
-    slangDef = slangDef.replace("[","")
-    slangDef = slangDef.replace("]","")
+    slangDefList = []
+    i = 1
+    for slangDef in (wordJson['list']):
+        x = str(i) + ": " + str(slangDef['definition'])
+        x = x.replace("[", "")
+        x = x.replace("]", "")
+        slangDefList.append(x)
+        i += 1
 
-    slangDef = str(slangDef)
+
 
     #define the dictionary to front end
     context = {
         "word" : word,
         "Formal" : formalDefList,
-        "slangDef" : slangDef
+        "slangDef" : slangDefList
     }
 
     #send to front end
