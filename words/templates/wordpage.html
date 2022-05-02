@@ -18,10 +18,6 @@
       <h1>
         <a href="/">Word:</a>
         {{word}}
-        <audio
-            src="{% say 'en-us' word %}"
-            controls
-        ></audio></p>
         <form action="/search/" method="post">
           {% csrf_token %}
           <input
@@ -33,16 +29,14 @@
           <input type="submit" value="Search Again" />
         </form>
       </h1>
-      <p> <strong> formal definition of {{word}} </strong> : {{definition}}</p>
-      <p><audio
-        src="{% say 'en-us' definition %}"
-        controls
-       ></audio></p>
-      <p> <strong> slang definition of {{word}} </strong> : {{slangDef}}</p>
-      <p><audio
-        src="{% say 'en-us' slangDef %}"
-        controls
-    ></audio></p>
+      <h2> <strong> formal definitions of {{word}} </strong></h2>
+      {% for def in Formal %}
+        <p>{{def}}</p>
+      {% endfor %}
+      
+
+      <h2> <strong> slang definitions of {{word}} </strong></h2>
+        <p>{{slangDef}}</p>
       
     </div>
     <div class="fixed-footer">
