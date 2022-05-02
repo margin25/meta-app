@@ -97,6 +97,8 @@ def wordpage(request, word):
     slangDef = slangDef.replace("[","")
     slangDef = slangDef.replace("]","")
 
+    definition = str(definition)
+    slangDef = str(slangDef)
     #send to front end
     return render(request, 'wordpage.html', {"word" : word, "definition": definition, "slangDef" : slangDef})
 

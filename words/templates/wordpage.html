@@ -1,4 +1,5 @@
 {% load static %}
+{% load gTTS %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -17,6 +18,10 @@
       <h1>
         <a href="/">Word:</a>
         {{word}}
+        <audio
+            src="{% say 'en-us' word %}"
+            controls
+        ></audio></p>
         <form action="/search/" method="post">
           {% csrf_token %}
           <input
@@ -29,7 +34,16 @@
         </form>
       </h1>
       <p> <strong> formal definition of {{word}} </strong> : {{definition}}</p>
+      <p><audio
+        src="{% say 'en-us' definition %}"
+        controls
+       ></audio></p>
       <p> <strong> slang definition of {{word}} </strong> : {{slangDef}}</p>
+      <p><audio
+        src="{% say 'en-us' slangDef %}"
+        controls
+    ></audio></p>
+      
     </div>
     <div class="fixed-footer">
         <div class="container">Copyright &copy; 2022 MetaDictionary </div>
