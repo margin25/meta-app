@@ -2,6 +2,7 @@ from multiprocessing import context
 import requests
 from django.shortcuts import render
 import _json
+import string
 
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
@@ -19,35 +20,75 @@ def homepage(request):
     json_ = response.json()
     wordOfDay = json_[0]
 
-    #get api request url for dictionary
-    url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/"
-    key = "?key=d7045d21-8d0c-4c61-9aea-8321bb66b12e"
-    url += wordOfDay + key
+   #WORDS API DEFINITION
+    url = "https://wordsapiv1.p.rapidapi.com/words/"
+    url += wordOfDay + "/definitions"
 
-    #get json file from api
-    websterResponse = requests.get(url)
-    wordJson = websterResponse.json()
+    headers = {
+        "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com",
+        "X-RapidAPI-Key": "bdf46a7a41msh7340c999b57f051p1cdf9cjsn032baa9651fa"
+    }
 
-    #get definition for random word
-    definition =   ((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[0])
-    if (definition == "pseq"):
-        definition = (((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])[0][1])['dt'][0][1]
-    else:
-        definition = (    ((((((((wordJson[0]['def'])[0])['sseq'])[0])[0])[1])['dt'])[0])[1]   )
-    definition = definition[4:]
+    formalDefList = []
 
-    if (definition.find("{it}")):
-        definition = definition.replace("{it}","")
-        definition = definition.replace("{/it}","")
+    #error handling
+    try:
+        response = requests.request("GET", url, headers=headers)
+        wordJson = response.json()
+        i = 1
+        formalText = ""
+        for d in (wordJson['definitions']):
+            if (i == 4):
+                break
+            x = str(i) + ": " + str(d['definition'])
+            formalDefList.append(x)
+            i += 1
+            formalText += "formal definition" + x 
+    except:
+        return render(request, "notword.html")
 
-    while (definition.find("{d_link|") != -1):
-        definition = definition.replace("{d_link|","",1)
-        removeStart = definition.find("|")
-        removeEnd = definition.find("}", removeStart)
-        definition = definition[0:removeStart] + definition[removeEnd + 1:]
+
+
+    #Urban Dictionary API Dictionary
+
+    #Send API request and get response
+    url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define"
+    querystring = {"term": wordOfDay}
+    headers = {
+    'x-rapidapi-key': "bdf46a7a41msh7340c999b57f051p1cdf9cjsn032baa9651fa",
+    'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com"
+    }   
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    wordJson = response.json()
+
+
+    #Parse through json and clean up
+    slangDefList = []
+    i = 1
+    slangText = ""
+    for slangDef in (wordJson['list']):
+        if (i==4):
+            break
+        x = str(i) + ": " + str(slangDef['definition'])
+        x = x.replace("[", "")
+        x = x.replace("]", "")
+        slangDefList.append(x)
+        i += 1
+        slangText += "slang definition" + x
+
+    #define the dictionary to front end
+    wordOfDay.capitalize()
+    context = {
+        "word" : wordOfDay,
+        "Formal" : formalDefList,
+        "slangDef" : slangDefList,
+        "formalText" : formalText,
+        "slangText"  : slangText
+    }
 
     #send to front end
-    return render(request, 'homepage.html', {"word" : wordOfDay, "definition" : definition})
+    return render(request, 'homepage.html', context)
 
 def wordpage(request, word):
     #WORDS API DEFINITION
@@ -61,14 +102,19 @@ def wordpage(request, word):
 
     formalDefList = []
 
+    #error handling
+    formalText = ""
     try:
         response = requests.request("GET", url, headers=headers)
         wordJson = response.json()
         i = 1
         for d in (wordJson['definitions']):
+            if (i == 4):
+                break
             x = str(i) + ": " + str(d['definition'])
             formalDefList.append(x)
             i += 1
+            formalText += "formal definition" + x 
     except:
         return render(request, "notword.html")
 
@@ -90,21 +136,50 @@ def wordpage(request, word):
 
     #Parse through json and clean up
     slangDefList = []
+    slangText = ""
     i = 1
     for slangDef in (wordJson['list']):
+        if (i==4):
+            break
         x = str(i) + ": " + str(slangDef['definition'])
         x = x.replace("[", "")
         x = x.replace("]", "")
         slangDefList.append(x)
         i += 1
+        slangText += "slang definition" + x
+        
+    #Pronunciation
+    try:
+        #get word pronuciation
+        url = "https://wordsapiv1.p.rapidapi.com/words/"
+        url += word + "/pronunciation"
 
+        headers = {
+            "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com",
+            "X-RapidAPI-Key": "bdf46a7a41msh7340c999b57f051p1cdf9cjsn032baa9651fa"
+        }
 
+        response = requests.request("GET", url, headers=headers)
+        wordJson = response.json()
+        pronuc = "(" + wordJson["pronunciation"]["all"] + ")"
+    except:
+        pronuc = ""
+
+    #Error Handling for Text-to-speech
+    if (formalText == ""):
+        formalText = "No Formal Definition Found"
+    if (slangText == ""):
+        slangText = "No Slang Definition Found"
 
     #define the dictionary to front end
+    word.capitalize()
     context = {
         "word" : word,
         "Formal" : formalDefList,
-        "slangDef" : slangDefList
+        "slangDef" : slangDefList,
+        "formalText" : formalText,
+        "slangText"  : slangText, 
+        "pro" : pronuc
     }
 
     #send to front end
