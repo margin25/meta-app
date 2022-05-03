@@ -1,46 +1,441 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MetaDictionary</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
-  </head>
-  <body>
-    <div class="fixed-header">
-      <div class="container">
-        <nav>
-          <a href="https://docs.google.com/presentation/d/1pHkc0fLpPrPV_nz6jYazySir9nGKtclcDkSgVxvTivI/edit?usp=sharing">MetaDictionary</a>
-        </nav>
-      </div>
-    </div>
-    <div class="container">
-      <h1> Search for a word: </h1>
-      <h2>
-        <form action="/search/" method="post">
-          {% csrf_token %}
-          <input
-            id="searchbar"
-            type="text"
-            name="searchbar"
-            value="{{ current_name }}"
-          />
-          <input type="submit" value="Search" />
-        </form>
-        <h2> <strong> formal definitions of {{word}} </strong></h2>
-      {% for def in Formal %}
-        <p>{{def}}</p>
-      {% endfor %}
-      
+    <!--ICONSCOUT CDN -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <!--GOOGLE FONTS (Montserrat) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!--SWIPER JS-->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+</head>
+<body>
+    <!-- START OF NAVBAR -->
+    <nav>
+        <div class="container nav__container">
+            <a href="homepage.html"> <h4> MetaDictionary </h4> </a>
+            <ul class = "nav__menu">
+                <li> <a href="homepage.html"> Home </a> </li>
+                <li> <a href="about.html"> About </a> </li>
+            </ul>
 
-      <h2> <strong> slang definitions of {{word}} </strong></h2>
-      {% for def in slangDef %}
-        <p>{{def}}</p>
-      {% endfor %}
-      </h2>
-    </div>
-    <div class="fixed-footer">
-      <div class="container">Copyright &copy; 2022 MetaDictionary </div>
-    </div>
-  </body>
+            <button id = "open-menu-btn"> <i class = "uil uil-bars"> </i></button>
+            <button id = "close-menu-btn"> <i class = "uil uil-multiply"> </i></button>
+
+        </div>
+    </nav>
+    <!-- END OF NAVBAR -->
+
+    <!-- START OF HEADER -->
+    <header>
+        <div class = "container header__container">
+            <div class = "header__left">
+              <h1> Search for a word: </h1>
+              <h1>
+                <form action="/search/" method="post">
+                  {% csrf_token %}
+                  <input
+                    id="searchbar"
+                    type="text"
+                    name="searchbar"
+                    value="{{ current_name }}"
+                  />
+                  <input type="submit" value="Search" />
+                </form>
+                <h2> <strong> formal definitions of {{word}} </strong>
+              </h1>
+              {% for def in Formal %}
+                <p>{{def}}</p>
+              {% endfor %}
+              
+        
+              <h2> <strong> slang definitions of {{word}} </strong></h2>
+              {% for def in slangDef %}
+                <p>{{def}}</p>
+              {% endfor %}
+              </h2>
+            </div>
+
+            <div class = "header__right">
+                <div class="header__right-image">
+                    <img src = "static/images/header.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- END OF HEADER -->
+
+    <!-- START OF CATEGORIES -->
+    <section class = "categories">
+        <div class="container categories__container">
+            <div class = "categories__left">
+                <h1> What is MetaDictionary? </h1>
+                <p> The purpose of this project is to have a dictionary that lists multiple definitions from different
+                  dictionary resources. Some dictionaries list the slang definitions of a word like Urban Dictionary,
+                  while others like Merriam-Webster list the formal definition of the word. By implementing multiple
+                  dictionary definitions together in one website, it can help users understand the context of the word.
+                  </p>
+            </div>
+            <div class = "categories__right">
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-bitcoin-circle"></i> </span>
+                        <h5>Word of the Day</h5>
+                        <p>Randomly generated surprise word for user</p>
+                </article>
+
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-palette"></i> </span>
+                        <h5>Dictionary API</h5>
+                        <p>API used for formal definition</p>
+                </article>
+
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-usd-circle"></i> </span>
+                        <h5>Urban Dictionary API</h5>
+                        <p>API used for slang definition</p>
+                </article>
+                
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-megaphone"></i> </span>
+                        <h5>Word of the Day API</h5>
+                        <p>API used for word of the day</p>
+                </article>
+
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-music"></i> </span>
+                        <h5>Frontend</h5>
+                        <p> HTML/CSS/Javascript</p>
+                </article>
+
+                <article class="category">
+                    <span class="category__icon"> <i class= "uil uil-puzzle-piece"></i> </span>
+                        <h5>Backend & Hosting</h5>
+                        <p>Django,Python,Heroku </p>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- END OF CATEGORIES -->
+    
+    <!-- START OF TEAM -->
+    <section class="courses">
+        <h2>Our Team</h2>
+        <div class="container courses__container">
+          <article class="course">
+              <div class="course__image">
+                  <img src="static/images/mualla_argin.jpg">
+              </div>
+              <div class="course__info">
+                  <h4>Mualla Argin</h4>
+                  <p>
+                    CS Junior @ Texas A&M
+                  </p>
+                  <a href="about.html" class="btn btn-primary">Learn More</a>
+              </div>
+          </article>
+
+          <article class="course">
+              <div class="course__image">
+                  <img src="static/images/dylan.jpg">
+              </div>
+              <div class="course__info">
+                  <h4>Dylan Heathcock</h4>
+                  <p>
+                    CS Junior @ Texas A&M
+                  </p>
+                  <a href="about.html" class="btn btn-primary">Learn More</a>
+              </div>
+          </article>
+
+          <article class="course">
+              <div class="course__image">
+                  <img src="static/images/matthew.jpg">
+              </div>
+              <div class="course__info">
+                  <h4>Matthew Atanas</h4>
+                  <p>
+                    CS Junior @ Texas A&M
+                  </p>
+                  <a href="about.html" class="btn btn-primary">Learn More</a>
+              </div>
+          </article>
+        </div>
+    </section>
+
+    <!-- END OF TEAM -->
+
+    <!-- START OF FAQ  -->
+    <section class="faqs">
+        <h2>Frequently Asked Questions</h2>
+        <div class="container faqs__container">
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>What is MetaDictionary?</h4>
+                    <p>
+                      The purpose of this project is to have a dictionary that lists multiple definitions from different
+                      dictionary resources. Some dictionaries list the slang definitions of a word like Urban Dictionary,
+                      while others like Merriam-Webster list the formal definition of the word. By implementing multiple
+                      dictionary definitions together in one website, it can help users understand the context of the word.
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Who created MetaDictionary?</h4>
+                    <p>
+                        Mualla Argin, Dylan Heathcock, Matthew Atanas
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Why the name MetaDictionary?</h4>
+                    <p>
+                        Meta means all and we wanted to create a dictionary that encompasses ALL kinds of definitions
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>What technologies were used to develop this dictionary?</h4>
+                    <p>
+                    Python,HTML/CSS/Javascript, Django, Heroku
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Will there be future updates?</h4>
+                    <p>
+                      Yes, We will further develop our Word of the Day Feature. Stay tuned!
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Where can I find the contact information of the web developers</h4>
+                    <p>
+                      In the about section of this page.
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Can I reach out to web developers on Linkedin or email?</h4>
+                    <p>
+                        Yes! Of course.
+                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>What technologies were used to develop this dictionary?</h4>
+                    <p>
+                      Python,HTML/CSS/Javascript, Django, Heroku                    </p>
+                </div>
+            </article>
+
+            <article class="faq">
+              <div class="faq__icon"><i class="uil uil-plus"></i></div>
+              <div class="question__answer">
+                  <h4>Will there be future updates?</h4>
+                  <p>
+                    Yes, We will further develop our Word of the Day Feature. Stay tuned!
+                  </p>
+              </div>
+          </article>
+
+            <article class="faq">
+                <div class="faq__icon"><i class="uil uil-plus"></i></div>
+                <div class="question__answer">
+                    <h4>Where can i ask more specific questions about the website</h4>
+                    <p>
+                      email us at margin25@tamu.edu
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+    <!-- END OF FAQ  -->
+
+    <!-- START OF TESTIMONIALS-->
+    <section class="container testimonials__container mySwiper">
+        <h2>User Testimonials</h2>
+        <div class="swiper-wrapper">
+            <article class="testimonial swiper-slide">
+                <div class="avatar">
+                    <img src="static/images/avatar1.jpg">
+                </div>
+                <div class="testimonial__info">
+                    <h5>Mariam</h5>
+                    <small>Student</small>
+                </div>
+                <div class="testimonial__body">
+                    <p>
+                      This website is amazing! It helps me understand my friends slang better! I Look forward to using it everyday.
+                    </p>
+                </div>
+            </article>
+
+            <article class="testimonial swiper-slide">
+                <div class="avatar">
+                    <img src="static/images/avatar2.jpg">
+                </div>
+                <div class="testimonial__info">
+                    <h5>Michael</h5>
+                    <small>Web Developer</small>
+                </div>
+                <div class="testimonial__body">
+                    <p>
+                      Very clean and effective user interface. I am taking inspiration from this project for my future projects!
+                    </p>
+                </div>
+            </article>
+
+            <article class="testimonial swiper-slide">
+                <div class="avatar">
+                    <img src="static/images/avatar3.jpg">
+                </div>
+                <div class="testimonial__info">
+                    <h5>Robin</h5>
+                    <small>Student</small>
+                </div>
+                <div class="testimonial__body">
+                    <p>
+                      This website is very helpful as I am a foreigner visiting the united states for the first time!
+                    </p>
+                </div>
+            </article>
+
+            <article class="testimonial swiper-slide">
+                <div class="avatar">
+                    <img src="static/images/avatar4.jpg">
+                </div>
+                <div class="testimonial__info">
+                    <h5>Mualla</h5>
+                    <small>Student</small>
+                </div>
+                <div class="testimonial__body">
+                    <p>
+                        I loved creating and using this website. I learned a lot about front end development through this project!
+                    </p>
+                </div>
+            </article>
+
+            <article class="testimonial swiper-slide">
+                <div class="avatar">
+                    <img src="static/images/avatar5.jpg">
+                </div>
+                <div class="testimonial__info">
+                    <h5>Heather</h5>
+                    <small>Student</small>
+                </div>
+                <div class="testimonial__body">
+                    <p>
+                      Can't wait to see what else MetaDictionary will offer us in the future! Loved the word of the day feature!!
+                    </p>
+                </div>
+            </article>
+        </div>
+        <div class="swiper-pagination"></div>
+    </section>
+    <!-- END OF TESTIMONIALS-->
+
+    <!-- START OF FOOTER-->
+    <footer>
+        <div class="container footer__container">
+          <div class="footer__1">
+            <a href="homepage.html" class="footer__logo"><h4>MetaDictionary</h4></a>
+            <p>
+              All-encompassing Dictionary 
+            </p>
+          </div>
+  
+          <div class="footer__2">
+            <h4>Permalinks</h4>
+            <ul class="permalinks">
+              <li><a href="homepage.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </div>
+  
+          <div class="footer__3">
+            <h4>Privacy</h4>
+            <ul class="privacy">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms and conditions</a></li>
+            </ul>
+          </div>
+  
+          <div class="footer__4">
+            <h4>Contact Us</h4>
+            <div>
+              <p>https://www.linkedin.com/in/muallaargin/</p>
+              <p>margin25@tamu.edu</p>
+            </div>
+  
+            <ul class="footer__socials">
+                <li>
+                 <a href="#"><i class="uil uil-instagram-alt"></i></a>
+               </li>
+               <li>
+                 <a href="#"><i class="uil uil-github"></i></a>
+               </li>
+               <li>
+                 <a href="#"><i class="uil uil-linkedin-alt"></i></a>
+               </li>
+             </ul>
+          </div>
+        </div>
+        <div class="footer__copyright">
+            <small> © MetaDictionary 2022 </small>
+        </div>
+      </footer>
+    <!-- END OF FOOTER-->
+
+
+
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script src="static/main.js"></script>
+
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            // when window width is >= 600px
+            breakpoints: {
+                600: {
+                    slidesPerView: 2,
+                }
+            }
+        });
+    </script>
+</body>
 </html>

@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.homepage, name="homepage"),
     path("homepage.html", views.homepage, name="homepage"),
+    path("about.html", views.about, name="about"),
     path('<str:word>', views.wordpage, name="wordpage"),
     path('search/', views.get_search, name='get_search'),
 ]

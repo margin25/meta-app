@@ -245,3 +245,6 @@ def get_search(request):
     else:
         form = NameForm()
     return render(request, 'wordpage.html', wordSearch, {'form': form})
+
+def about(request):
+    return render(request, 'about.html')
