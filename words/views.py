@@ -47,6 +47,40 @@ def homepage(request):
     except:
         return render(request, "notword.html")
 
+    while(len(formalDefList) == 0):
+        url = "https://random-word-api.herokuapp.com/word"
+        response = requests.get(url)
+
+        #get api response for random word
+        json_ = response.json()
+        wordOfDay = json_[0]
+
+        #WORDS API DEFINITION
+        url = "https://wordsapiv1.p.rapidapi.com/words/"
+        url += wordOfDay + "/definitions"
+
+        headers = {
+            "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com",
+            "X-RapidAPI-Key": "bdf46a7a41msh7340c999b57f051p1cdf9cjsn032baa9651fa"
+        }
+
+        formalDefList = []
+
+        #error handling
+        response = requests.request("GET", url, headers=headers)
+        wordJson = response.json()
+        i = 1
+        formalText = ""
+        for d in (wordJson['definitions']):
+            if (i == 4):
+                break
+            x = str(i) + ": " + str(d['definition'])
+            formalDefList.append(x)
+            i += 1
+            formalText += "formal definition" + x 
+    
+
+    
 
 
     #Urban Dictionary API Dictionary
@@ -76,6 +110,9 @@ def homepage(request):
         slangDefList.append(x)
         i += 1
         slangText += "slang definition" + x
+
+    if len(slangDefList) == 0:
+        slangDefList.append("No Slang Definitions Found")
 
     #define the dictionary to front end
     wordOfDay.capitalize()
@@ -171,6 +208,11 @@ def wordpage(request, word):
     if (slangText == ""):
         slangText = "No Slang Definition Found"
 
+    if len(slangDefList) == 0:
+        slangDefList.append("No Slang Definitions Found")
+    if len(formalDefList) == 0:
+        formalDefList.append("No Formal Definitons Found")
+        
     #define the dictionary to front end
     word.capitalize()
     context = {
