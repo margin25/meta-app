@@ -5,53 +5,53 @@
   <head>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
   </head>
+<body>
+  <div class="word">
+    <h1>{{word}} {{pro}}</h1>
+    <p> <br /> </p>
+    <p> <strong> formal definitions of {{word}} </strong></p>
+    <p> <br /> </p>
+    {% for def in Formal %}
+      <p>{{def}}</p>
+    {% endfor %}
+    <p> <br /> </p>
 
-  <body>
-    <div class="fixed-header">
-      <div class="container">
-        {% comment %} <nav>
-          <a href="homepage.html">MetaDictionary</a>
-        </nav> {% endcomment %}
-      </div>
-    </div>
-    <div class="container">
-      <h1>
-        <form action="/search/" method="post">
-          {% csrf_token %}
-          <input
-            id="searchbar"
-            type="text"
-            name="searchbar"
-            value="{{ current_name }}"
-          />
-          <input type="submit" value="Search Again" />
-        </form>
-      </h1>
-      <h1>{{word}} {{pro}}</h1>
-      <h2> <strong> formal definitions of {{word}} </strong></h2>
-      {% for def in Formal %}
-        <p>{{def}}</p>
-      {% endfor %}
+    <audio
+      src="{% say 'en-us' formalText %}"
+      controls
+    ></audio>
 
-      <audio
-        src="{% say 'en-us' formalText %}"
-        controls
-      ></audio>
-      
+    <p> <br /> </p>
+    
 
-      <h2> <strong> slang definitions of {{word}} </strong></h2>
-      {% for def in slangDef %}
-        <p>{{def}}</p>
-      {% endfor %}
+    <p> <strong> slang definitions of {{word}} </strong></p>
+    <p> <br /> </p>
+    {% for def in slangDef %}
+      <p>{{def}}</p>
+    {% endfor %}
+    <p> <br /> </p>
 
-      <audio
-        src="{% say 'en-us' slangText %}"
-        controls
-      ></audio>
-      
-    </div>
-    <div class="fixed-footer">
-        <div class="container">Copyright &copy; 2022 MetaDictionary </div>
-    </div>
+    <audio
+      src="{% say 'en-us' slangText %}"
+      controls
+    ></audio>
+
+    <p> <br /> </p>
+  
+
+    <h1>
+      <form action="/search/" method="post">
+        {% csrf_token %}
+        <input
+          id="searchbar"
+          type="text"
+          name="searchbar"
+          value="{{ current_name }}"
+        />
+        <input type="submit" value="Search Again" />
+      </form>
+    </h1>  
+</div>
+<a href="home.html" class="btn btn-primary"> Go back to home page </a>
   </body>
 </html>
